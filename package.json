@@ -1,0 +1,31 @@
+{
+  "name": "lootalot",
+  "version": "1.1.0",
+  "description": "Library for simulating lots of loot",
+  "main": "dist/lootalot.js",
+  "module": "dist/lootalot.mjs",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "bili",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "math",
+    "game",
+    "rpg",
+    "loot",
+    "lootbox",
+    "gacha",
+    "incremental",
+    "random"
+  ],
+  "author": "ducdat0507",
+  "license": "ISC",
+  "dependencies": {
+    "bili": "^5.0.5",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.5.4"
+  }
+}
