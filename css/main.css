@@ -1,0 +1,106 @@
+body {
+    overflow: hidden;
+}
+
+.big-title {
+    font-size: min(10vw, 4em);
+    margin: 0;
+}
+
+.loot-simulator {
+    width: 400px;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.loot-simulator :is(select, button) {
+    width: 100%;
+}
+.loot-simulator label {
+    text-align: center;
+    font-variant-caps: small-caps;
+    border-bottom: 1px solid #ffe95b77;
+    border-radius: 5px;
+    line-height: 1.5;
+}
+.loot-simulator #loot-list {
+    flex: 1;
+    border-radius: 5px;
+    border-block: 1px solid #ffe95b;
+    background: linear-gradient(90deg, #0000, #000 2% 98%, #0000);
+    overflow: auto;
+    padding-block: 10px;
+}
+.loot-simulator #loot-list > div {
+    display: flex;
+    padding-inline: 10px;
+    margin-inline: 10px;
+    border-bottom: 1px solid #ffe95b77;
+}
+.loot-simulator #loot-list > div:last-child {
+    border-bottom: none;
+}
+.loot-simulator #loot-list > div > div {
+    flex: 1;
+}
+.loot-simulator #loot-list > div > div:last-child {
+    text-align: end;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+.loot-simulator #loot-trials {
+    font-variant-numeric: lining-nums tabular-nums;
+}
+.loot-simulator #loot-button {
+    background: linear-gradient(#ffee00, #aa9900);
+    color: black;
+    box-shadow: inset 0 -8px 8px #0003, 0 2px 4px #000;
+    text-shadow: 0 1px #fff7;
+}
+.loot-simulator #loot-button:hover {
+    box-shadow: inset 0 -8px 8px #0003, 0 3px 6px #000;
+}
+.loot-simulator #loot-button:active {
+    background: linear-gradient(#aa9900, #ffee00);
+    box-shadow: inset 0 8px 8px #0003, 0 2px 4px #000;
+}
+
+.article-button {
+    color: inherit;
+    text-decoration: none;
+}
+.article-button article {
+    border: 1px solid #ffe95b;
+    background: #44280c;
+    box-shadow: inset 0 -8px 8px #0003, 0 2px 4px #000;
+    padding: 15px 20px 20px 20px;
+}
+.article-button article:hover {
+    box-shadow: inset 0 -4px 8px #0005, 0 3px 6px #000;
+    transform: translateY(-1px);
+}
+.article-button article:active {
+    box-shadow: inset 0 4px 8px #0003, 0 2px 4px #000;
+    transform: translateY(0px);
+    filter: brightness(0.6);
+}
+.article-button h2 {
+    font-size: min(5vw, 2em);
+}
+.article-button p {
+    margin: 0;
+    font-style: italic;
+}
+
+
+.floating-panel {
+    position: sticky;
+    top: 0px;
+}
+.floating-panel:first-child {
+    padding-left: 0;
+}
+.floating-panel:last-child {
+    padding-right: 0;
+}

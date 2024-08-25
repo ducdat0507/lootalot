@@ -1,0 +1,58 @@
+body {
+    background: transparent;
+    text-align: justify;
+}
+
+pre {
+    line-height: 1.4;
+    padding: 1em;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+pre::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.hljs-comment {
+    color: #f3f2d177;
+    font-style: italic;
+}
+.hljs-keyword {
+    color: #ffe95b;
+}
+.hljs-title {
+    color: #ffe95b;
+    text-shadow: 0 0 0.5px #ffe95b, 0 0 0.5px #ffe95b, 0 0 0.5px #ffe95b, 0 1px 1px #000;
+}
+.hljs-number {
+    color: #b1bbff;
+    font-style: italic;
+}
+.hljs-string {
+    color: #a6fe91;
+    font-style: italic;
+}
+
+a {
+    color: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.4;
+    margin-block: 1rem;
+}
+
+h1::before {
+    content: "# ";
+    opacity: .5;
+}
+h2::before {
+    content: "## ";
+    opacity: .5;
+}
+h3::before {
+    content: "### ";
+    opacity: .5;
+}

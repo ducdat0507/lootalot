@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lootalot</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <link href="css/common.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/lootalot@1"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tables/lunar-laboratory-equipment.js"></script>
+</head>
+<body onload="init()">
+    <div class="main-container">
+        <main>
+            <h1 class="big-title mono">lootalot</h1>
+            <p>
+                <code>lootalot</code> is a JavaScript library that specializes in generating loot drops from loot tables.
+                The strength of this library is also what is referred to by its name&mdash;the ability to generate arbitrary amounts of loot trials without sweat.
+            </p>
+            <div>&nbsp;</div>
+            <a class="article-button" href="docs">
+                <article>
+                    <h2>Get Started</h2>
+                    <p>Use <code>lootalot</code> for your projects!</p>
+                </article>
+            </a>
+            <div>&nbsp;</div>
+            <a class="article-button" href="docs">
+                <article>
+                    <h2>Learn More</h2>
+                    <p>Go to <code>lootalot</code>'s documentation page</p>
+                </article>
+            </a>
+        </main>
+        <aside class="floating-panel loot-simulator">
+            <h2>Try me:</h2>
+            <select id="loot-tables"></select>
+            <div id="loot-list"></div>
+            <label for="loot-trials">
+                Trials
+            </label>
+            <input id="loot-trials" type="number" min="1" step="1" placeholder="1">
+            <div style="display: flex; gap: 5px">
+                <button id="loot-button">Loot!</button>
+                <button id="loot-reset">Reset loot</button>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Introduction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../page.css">
+    <script src="../page.js"></script>
+</head>
+<body>
+    <h1>Introduction</h1>
+    <p>
+        <code>lootalot</code> is a JavaScript library that specializes in simulating loot drops from loot tables.
+        Additionally, it uses probability math to approximate arbitrarily high numbers of trials which can be helpful
+        if your use case involves a ton of looting simutaneously.
+    </p>
+    <h2>Example usage</h2>
+    <pre><code class="language-js">// Import our LootTable class.
+import { LootTable } from 'lootalot';
+
+// Make a loot table for our example monster.
+let table = new LootTable(
+    // Each one of these pairs of square brackets 
+    // represents a separate loot pool a roll
+    // will draw independently.
+    [
+        // Drop one of these items per roll.
+        { item: "Apple" },
+        { item: "Banana" },
+        { item: "Citrus" },
+        // These items are 10 times rarer than
+        // those above.
+        { item: "Diamond", w: 0.1 },
+        { item: "Emerald", w: 0.1 },
+    ],
+    [
+        // Additionally, drop an extra 150~250 gold.
+        { item: "Gold", count: [150, 250] }
+    ],
+    [
+        // And an additional 1% chance for our monster
+        // to drop 1~5 gem.
+        { item: "Gem", count: [1, 5], p: 0.01 }
+    ]
+);
+
+// Kill our monster one trillion times, why not?
+let loot = table.loot(1_000_000_000_000);
+
+// Display our loot.
+console.table(loot);</code></pre>
+    <h2>What is this for?</h2>
+    <p>
+        This library is made for games in mind, specifically incremental/idle games that might need to simulate
+        a ton of loot simutaneously as part of their offline progression calculation.
+    </p>
+    <h2>Get started</h2>
+    <p>
+        Check out the <a href="get-started.html">Get started</a> guide to get started.
+    </p>
+</body>
+</html>

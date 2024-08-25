@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lootalot docs</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <link href="../css/common.css" rel="stylesheet">
+    <link href="../css/docs.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/lootalot@1"></script>
+    <script src="../js/docs.js"></script>
+</head>
+<body onload="init()">
+    <div class="main-container">
+        <aside id="navigation-bar">
+            <div id="navigation-list"></div>
+        </aside>
+        <main>
+            <h1 id="page-title"></h1>
+            <iframe style="display:none" id="mainframe" onload="onContentLoad(this)" src="about:blank"></iframe>
+        </main>
+        <aside id="summary-bar">
+            <div id="summary-list"></div>
+        </aside>
+    </div>
+</body>
+</html>
