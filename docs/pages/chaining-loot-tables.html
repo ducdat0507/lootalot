@@ -29,8 +29,10 @@
         There are a few use cases where you want to do this, for example gacha games where probabilties are defined by a 
         group of items that share the same rarity instead of each item individually.
     </p>
+
+    <h2>Basic chaining</h2>
     <p>
-        To do this, we can define a loot definition entry to contain a <code>table</code> instead of an <code>item</code>.
+        To chain a loot table into another one, we can define a loot definition entry to contain a <code>table</code> instead of an <code>item</code>.
         If that loot definition is chosen during a loot, the parent loot table will automatically call the child one's <code>loot</code>
         function and merge the child's loot result into the parent's one:
     </p>

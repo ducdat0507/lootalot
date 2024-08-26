@@ -16,6 +16,7 @@ function init() {
         navigationBar: document.getElementById("navigation-bar"),
         navigationList: document.getElementById("navigation-list"),
         summaryBar: document.getElementById("summary-bar"),
+        summaryList: document.getElementById("summary-list"),
         pageTitle: document.getElementById("page-title"),
         mainframe: document.getElementById("mainframe"),
     }
@@ -65,9 +66,9 @@ function init() {
 }
 
 function update() {
-    if (elms.mainframe) {
+    try {
         elms.mainframe.style.height = (elms.mainframe.contentWindow?.document?.body?.scrollHeight || 0) + 40 + "px";
-    }
+    } catch (e) {}
     requestAnimationFrame(update);
 }
 
@@ -92,6 +93,24 @@ async function onContentLoad(frame) {
     for (let page of map) {
         page.elm?.classList.toggle("active", page.path == target);
     }
+    elms.summaryList.textContent = "";
+    for (let header of frame.contentWindow.document.querySelectorAll("h2, h3, h4, h5, h6")) {
+        let a = document.createElement("a");
+        a.className = "link-entry";
+        a.style.paddingInlineStart = (header.tagName.substring(1) - 1) * 10 + "px";
+        a.textContent = header.textContent;
+        a.href = "#";
+        a.target = "#mainframe";
+        a.onclick = (e) => {
+            e.preventDefault();
+            header.scrollIntoView({block: "center"});
+            document.body.classList.remove("is-summary");
+        }
+        elms.summaryList.append(a);
+    }
+    frame.contentWindow.addEventListener("unload", () => {
+        elms.summaryList.textContent = "";
+    })
 }
 
 function loadPage(target) {
