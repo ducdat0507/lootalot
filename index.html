@@ -21,8 +21,17 @@
                 <code>lootalot</code> is a JavaScript library that specializes in generating loot drops from loot tables.
                 The strength of this library is also what is referred to by its name&mdash;the ability to generate arbitrary amounts of loot trials without sweat.
             </p>
+            <span id="try-me-button">
+                <div>&nbsp;</div>
+                <a class="article-button" href="#try-me">
+                    <article>
+                        <h2>Try me</h2>
+                        <p>See <code>lootalot</code> working for yourself!</p>
+                    </article>
+                </a>
+            </span>
             <div>&nbsp;</div>
-            <a class="article-button" href="docs">
+            <a class="article-button" href="docs?p=getting-started">
                 <article>
                     <h2>Get Started</h2>
                     <p>Use <code>lootalot</code> for your projects!</p>
@@ -37,7 +46,10 @@
             </a>
         </main>
         <aside class="floating-panel loot-simulator">
-            <h2>Try me:</h2>
+            <h2>
+                <a id="try-me-back-link" href="#"><button>&larr;</button></a>
+                Try me:
+            </h2>
             <select id="loot-tables"></select>
             <div id="loot-list"></div>
             <label for="loot-trials">

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chaining loot tables</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../page.css">
+    <script src="../page.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/lootalot@1"></script>
+    <script>
+        window.LootTable = lootalot.LootTable;
+        function generateLootResults(name, defOffset = 2, resultOffset = 1) {
+            let elms = document.querySelectorAll("pre code");
+            let loot = (Function(elms[elms.length - defOffset].innerText + "; return "+ name + ".loot(1)"))();
+            elms[elms.length - resultOffset].textContent = JSON.stringify(loot, null, 4)
+                .replace(/"([^"]+)":/g, "$1:");
+        }
+    </script>
+</head>
+<body>
+    <h1>Chaining loot tables</h1>
+    <p>
+        <code>lootalot</code> allows chaining <code>LootTable</code> objects in order to implement more complex loot tables.
+        There are a few use cases where you want to do this, for example gacha games where probabilties are defined by a 
+        group of items that share the same rarity instead of each item individually.
+    </p>
+    <p>
+        To do this, we can define a loot definition entry to contain a <code>table</code> instead of an <code>item</code>.
+        If that loot definition is chosen during a loot, the parent loot table will automatically call the child one's <code>loot</code>
+        function and merge the child's loot result into the parent's one:
+    </p>
+    <pre><code class="language-js">// Create a loot table for each of our
+// desired rarity
+const pool1 = new LootTable(
+    [
+        { item: "1★ Red Coin" },
+        { item: "1★ Green Coin" },
+        { item: "1★ Blue Coin" },
+    ], 
+);
+const pool2 = new LootTable(
+    [
+        { item: "2★ Red Coin" },
+        { item: "2★ Green Coin" },
+        { item: "2★ Blue Coin" },
+    ], 
+);
+const pool3 = new LootTable(
+    [
+        { item: "3★ Red Coin" },
+        { item: "3★ Green Coin" },
+        { item: "3★ Blue Coin" },
+    ], 
+);
+
+// Create a main loot table that references
+// the previous loot tables
+const mainTable = new LootTable(
+    [
+        { table: pool1, w: 78.5 },
+        { table: pool2, w: 18.5 },
+        { table: pool3, w: 3 },
+    ], 
+);</code></pre>
+    <p>
+        Sample loot from <code>mainTable</code>:
+    </p>
+    <pre><code class="language-js"></code></pre>
+    <script>generateLootResults("mainTable")</script>
+
+    <h2>Compositing items</h2>
+    <p>
+        If we try to define loot definitions that both have an <code>item</code> and a <code>table</code>,
+        <code>lootalot</code> will try to merge that item with the result from the child table when that loot
+        definition is picked:
+    </p>
+    <pre><code class="language-js">const colorTable = new LootTable(
+    [
+        { item: { color: "Red" } },
+        { item: { color: "Green" } },
+        { item: { color: "Blue" } },
+    ], 
+);
+
+const mainTable = new LootTable(
+    [
+        { item: { rarity: 1 }, table: colorTable, w: 78.5 },
+        { item: { rarity: 2 }, table: colorTable, w: 18.5 },
+        { item: { rarity: 3 }, table: colorTable, w: 3 },
+    ], 
+);</code></pre>
+    <p>
+        Sample loot from <code>mainTable</code>:
+    </p>
+    <pre><code class="language-js"></code></pre>
+    <script>generateLootResults("mainTable")</script>
+    <p>
+        In order to benefit from this, all <code>item</code>s involved should be defined as objects.
+    </p>
+</body>
+</html>

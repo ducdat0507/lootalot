@@ -104,3 +104,45 @@ body {
 .floating-panel:last-child {
     padding-right: 0;
 }
+
+#try-me-button, #try-me-back-link {
+    display: none;
+}
+
+@media (max-width: 1000px) {
+    #try-me-button, #try-me-back-link {
+        display: unset;
+    }
+
+    .main-container {
+        --col-gap: max(0px, calc(50vw - 300px));
+        justify-content: flex-start;
+        gap: calc(var(--col-gap) * 2);
+        padding-inline: var(--col-gap);
+    }
+
+    .main-container > :first-child {
+        transition: margin .4s;
+    }
+    .is-try-me .main-container > :first-child {
+        margin-inline-start: calc(-100% - var(--col-gap) * 2);
+    }
+
+    .main-container > * {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    .floating-panel:last-child {
+        padding-right: 40px;
+    }
+
+    #try-me-back-link {
+        color: white;
+        text-decoration: none;
+    }
+    #try-me-back-link button {
+        display: inline-block;
+        width: auto;
+    }
+}

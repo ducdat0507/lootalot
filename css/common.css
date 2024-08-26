@@ -23,6 +23,10 @@ code, pre {
     padding: 0 .4ch;
 }
 
+pre code {
+    padding: 0;
+}
+
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
     font-family: var(--header-font);
@@ -67,12 +71,13 @@ input {
     justify-content: center;
     position: fixed;
     inset: 0;
-    overflow-y: auto;
+    overflow: hidden auto;
 }
 
 main {
+    --main-padding: min(40px, calc(6vw - 6px));
     width: min(560px, calc(100vw - 40px));
-    padding: min(40px, calc(6vw - 6px));
+    padding: var(--main-padding);
     height: fit-content;
     min-height: 100%;
     box-sizing: border-box;

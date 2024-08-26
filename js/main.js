@@ -4,6 +4,8 @@ let elms = {};
 let table = null;
 let loots = [];
 
+let shouldGoBack = false;
+
 function init() {
     elms = {
         lootTables: document.getElementById("loot-tables"),
@@ -29,6 +31,19 @@ function init() {
 
     elms.lootButton.onclick = loot;
     elms.lootReset.onclick = resetLoot;
+
+    document.querySelector("#try-me-button a").onclick = () => {
+        shouldGoBack = true;
+    }
+    document.querySelector("#try-me-back-link").onclick = (e) => {
+        if (shouldGoBack) {
+            e.preventDefault();
+            history.back();
+        }
+    }
+
+    window.onhashchange = updatePanels;
+    updatePanels();
 }
 
 function loot() {
@@ -80,4 +95,8 @@ function format(number) {
     }
     mag = Math.floor(mag + Math.log10(1.00005));
     return (number / (10 ** mag)).toPrecision(4) + "e" + mag;
+}
+
+function updatePanels() {
+    document.body.classList.toggle("is-try-me", location.hash == "#try-me");
 }

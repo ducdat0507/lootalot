@@ -20,12 +20,102 @@ aside:first-child {
 aside:last-child {
     padding-right: 0;
 }
-
+header {
+    margin: calc(var(--main-padding) * -1) calc(var(--main-padding) * -1) var(--main-padding) calc(var(--main-padding) * -1);
+    padding: 10px;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    background: #44280c;
+}
 #page-title {
-    display: none;
+    font-size: 1.5em;
+    flex: 1;
+    margin: 0 10px;
 }
 
 .link-entry {
+    display: block;
     color: white;
     text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+.link-entry.active {
+    background: linear-gradient(90deg, #ffe95b77, #0000);
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid #ffe95b;
+}
+
+#navigation-show-button, #navigation-hide-button,
+#summary-show-button, #summary-hide-button, header {
+    display: none;
+}
+
+@media (max-width: 1240px) {
+    header {
+        display: flex;
+    }
+    #summary-show-button, #summary-hide-button {
+        display: unset;
+    }
+    #summary-bar {
+        padding: 20px;
+        width: min(100%, 320px);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        transform: translateX(100%);
+        background: #44280c;
+        transition: transform .4s, box-shadow .4s;
+    }
+    .is-summary #summary-bar {
+        transform: none;
+        box-shadow: 0 0 40px #000;
+    }
+}
+@media (max-width: 920px) {
+    #navigation-show-button, #navigation-hide-button {
+        display: unset;
+    }
+
+    .main-container {
+        --col-gap: max(0px, calc(50vw - 300px));
+        justify-content: flex-start;
+        gap: calc(var(--col-gap) * 2);
+        padding-inline: var(--col-gap);
+    }
+
+    .main-container > :is(main, #navigation-bar) {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    .main-container > #navigation-bar {
+        transition: margin .4s;
+        margin-inline-start: calc(-100% - var(--col-gap) * 2);
+    }
+    .is-navigation .main-container > #navigation-bar {
+        margin-inline-start: 0;
+    }
+
+    #navigation-bar {
+        padding: 40px;
+    }
+    #navigation-hide-button {
+        position: absolute;
+        right: 40px;
+        top: 40px;
+    }
+    #navigation-bar h2 {
+        line-height: 40px;
+    }
+
+    #page-title {
+        margin: 0 20px;
+    }
 }

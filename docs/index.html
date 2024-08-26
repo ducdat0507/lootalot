@@ -15,13 +15,23 @@
 <body onload="init()">
     <div class="main-container">
         <aside id="navigation-bar">
-            <div id="navigation-list"></div>
+            <h2>lootalot docs</h2>
+            <button id="navigation-hide-button">&rarr;</button>
+            <div id="navigation-list">
+                <a class="link-entry" href="../">&larr; Return to home page</a>
+                <hr/>
+            </div>
         </aside>
         <main>
-            <h1 id="page-title"></h1>
+            <header>
+                <button id="navigation-show-button">&larr;</button>
+                <h1 id="page-title"></h1>
+                <button id="summary-show-button">&rarr;</button>
+            </header>
             <iframe style="display:none" id="mainframe" onload="onContentLoad(this)" src="about:blank"></iframe>
         </main>
         <aside id="summary-bar">
+            <button id="summary-hide-button">&larr;</button>
             <div id="summary-list"></div>
         </aside>
     </div>

@@ -1,5 +1,5 @@
 body {
-    background: transparent;
+    background: #44280c;
     text-align: justify;
 }
 
@@ -8,6 +8,7 @@ pre {
     padding: 1em;
     overflow-x: auto;
     scrollbar-width: thin;
+    box-sizing: border-box;
 }
 
 pre::-webkit-scrollbar {
@@ -22,7 +23,7 @@ pre::-webkit-scrollbar {
 .hljs-keyword {
     color: #ffe95b;
 }
-.hljs-title {
+.hljs-title, .hljs-name {
     color: #ffe95b;
     text-shadow: 0 0 0.5px #ffe95b, 0 0 0.5px #ffe95b, 0 0 0.5px #ffe95b, 0 1px 1px #000;
 }
@@ -42,17 +43,18 @@ a {
 h1, h2, h3, h4, h5, h6 {
     line-height: 1.4;
     margin-block: 1rem;
+    background: linear-gradient(#0007 50%, #0000 50%) bottom / 100% .6em no-repeat;
 }
 
 h1::before {
     content: "# ";
-    opacity: .5;
 }
 h2::before {
     content: "## ";
-    opacity: .5;
 }
 h3::before {
     content: "### ";
-    opacity: .5;
+}
+:is(h1, h2, h3)::before {
+    color: #ffe95b77;
 }

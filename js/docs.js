@@ -2,7 +2,10 @@ let elms = {};
 
 let map = [
     { name: "Introduction", path: "introduction" },
-    { name: "Get started", path: "get-started" },
+    { name: "Getting started", path: "getting-started" },
+    { name: "The basics", path: "the-basics" },
+    "",
+    { name: "Chaining loot tables", path: "chaining-loot-tables" },
 ]
 let title;
 
@@ -18,16 +21,38 @@ function init() {
     }
 
     for (let item of map) {
-        let a = document.createElement("a");
-        a.className = "link-entry";
-        a.textContent = item.name;
-        a.href = "pages/" + item.path + ".html";
-        a.target = "#mainframe";
-        a.onclick = (e) => {
-            e.preventDefault();
-            loadPage(item.path);
+        if (item == "") {
+            let hr = document.createElement("hr");
+            elms.navigationList.append(hr);
+        } else {
+            let a = document.createElement("a");
+            a.className = "link-entry";
+            a.textContent = item.name;
+            a.href = "pages/" + item.path + ".html";
+            a.target = "#mainframe";
+            a.onclick = (e) => {
+                e.preventDefault();
+                document.body.classList.remove("is-navigation");
+                loadPage(item.path);
+            }
+            item.elm = a;
+            elms.navigationList.append(a);
         }
-        elms.navigationList.append(a);
+    }
+
+    document.getElementById("navigation-show-button").onclick = () => {
+        document.body.classList.remove("is-summary");
+        document.body.classList.add("is-navigation");
+    }
+    document.getElementById("summary-show-button").onclick = () => {
+        document.body.classList.remove("is-navigation");
+        document.body.classList.add("is-summary");
+    }
+    document.getElementById("navigation-hide-button").onclick = () => {
+        document.body.classList.remove("is-navigation");
+    }
+    document.getElementById("summary-hide-button").onclick = () => {
+        document.body.classList.remove("is-summary");
     }
 
     let target = currentPage = /p=([^&#=]*)/.exec(window.location.search);
@@ -41,7 +66,7 @@ function init() {
 
 function update() {
     if (elms.mainframe) {
-        elms.mainframe.style.height = (elms.mainframe.contentWindow?.document?.documentElement?.scrollHeight || 0) + "px";
+        elms.mainframe.style.height = (elms.mainframe.contentWindow?.document?.body?.scrollHeight || 0) + 40 + "px";
     }
     requestAnimationFrame(update);
 }
@@ -59,10 +84,13 @@ async function onContentLoad(frame) {
     if (currentPage != target) {
         let page = map.find(x => x.path == target);
         if (page) {
-            history.replaceState(page, page.name + " - lootalot docs", "?p=" + page.path);
+            history.replaceState({...page, elm: undefined}, page.name + " - lootalot docs", "?p=" + page.path);
             document.title = page.name + " - lootalot docs";
             currentPage = target;
         }
+    }
+    for (let page of map) {
+        page.elm?.classList.toggle("active", page.path == target);
     }
 }
 
@@ -70,6 +98,10 @@ function loadPage(target) {
     let page = map.find(x => x.path == target);
     if (!page) return;
     elms.mainframe.src = "pages/" + page.path + ".html";
+    elms.pageTitle.textContent = page.name;
+    for (let page of map) {
+        page.elm?.classList.toggle("active", page.path == target);
+    }
 }
 
 window.addEventListener("popstate", (e) => {

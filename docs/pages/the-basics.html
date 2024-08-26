@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The basics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../page.css">
+    <script src="../page.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/lootalot@1"></script>
+    <script>
+        window.LootTable = lootalot.LootTable;
+        function generateLootResults(name, defOffset = 2, resultOffset = 1) {
+            let elms = document.querySelectorAll("pre code");
+            let loot = (Function(elms[elms.length - defOffset].innerText + "; return "+ name + ".loot(1)"))();
+            elms[elms.length - resultOffset].textContent = JSON.stringify(loot)
+                .replaceAll('{', "\r\n    { ").replaceAll(']', "\r\n]")
+                .replaceAll('}', " }").replaceAll(',', ", ")
+                .replace(/"([^"]+)":/g, "$1: ");
+        }
+    </script>
+</head>
+<body>
+    <h1>The basics</h1>
+
+    <h2>Loot tables</h2>
+    <p>
+        Before we are able to loot, we'll need to create a loot table definition by creating a <code>LootTable</code> object first. 
+        Here's a simple loot table definition to get us started:
+    </p>
+    <pre><code class="language-js">const table1 = new LootTable(
+    [
+        { item: "Red Coin" },
+        { item: "Green Coin" },
+        { item: "Blue Coin" },
+    ],
+    [
+        { item: "Red Gem" },
+        { item: "Green Gem" },
+        { item: "Blue Gem" },
+    ],
+    [
+        { item: "Red Candy" },
+        { item: "Green Candy" },
+        { item: "Blue Candy" },
+    ]
+);</code></pre>
+    <p>
+        Notice the we are passing arrays of objects as the arguments. We call those arrays 
+        <dfn>loot pools</dfn>, and the objects that the arrays are containing <dfn>loot definitions</dfn>.
+        A loot table can contain multiple loot pools and a loot pool can contain multiple loot definitions.
+        Each time a loot is performed, 1 entry out of each loot pool will be pick randomly and is given as loot.
+        For example with the above loot table, we are guranteed to get 1 coin, 1 gem, and 1 candy each time
+        we perform a loot since they are in separate loot pools, however their colors will be different every time
+        since there can only be 1 item that can be drawn from each loot pool.
+    </p>
+
+    <h2>Generating a loot</h2>
+    <p>
+        Generating a loot is done by calling the <code>loot</code> function of a <code>LootTable</code> object:
+    </p>
+    <pre><code class="language-js">const loot = table1.loot(1)</code></pre>
+    <p>
+        The <code>loot</code> function accepts a single number argument indicating the number of loot trials we 
+        should do. For sufficiently high numbers of trials such as a thousand, a million, or a billion; mathematical approximations are
+        done to ensure short execution time.
+    </p>
+    <p>
+        After we run the two previous code snippets sequentially, we should have a <code>loot</code> variable that 
+        contains an array of objects that looks like the example below (actual results may vary due to randomness):
+    </p>
+    <pre><code class="language-js"></code></pre>
+    <script>generateLootResults("table1", 3)</script>
+    <p>
+        Each entry in the array is an object that contains two properties: the <code>item</code> value corresponding 
+        to the <code>item</code> value of the loot definition that got rolled, and the <code>count</code> value repesenting
+        how many of that item did we get.
+    </p>
+    
+    <h2>Defining probabilities</h2>
+    <p>
+        Now let us make some items rarer than others! To do this we can add <code>w</code> or <code>p</code> values
+        to our loot definitions:
+    </p>
+    <pre><code class="language-js">const table2 = new LootTable(
+    [
+        { item: "Red Coin",    w: 5 },
+        { item: "Green Coin",  w: 3 },
+        { item: "Blue Coin",   w: 2 },
+    ], 
+    [ 
+        { item: "Red Gem",     p: 0.25 },
+        { item: "Green Gem",   p: 0.15 },
+        { item: "Blue Gem",    p: 0.10 },
+    ],
+    [
+        { item: "Red Candy",   w: 5 },
+        { item: "Green Candy", w: 3 },
+        { item: "Blue Candy",  w: 2 },
+        { w: 90 },
+    ]
+);</code></pre>
+    <p>
+        Sample loot:
+    </p>
+    <pre><code class="language-js"></code></pre>
+    <script>generateLootResults("table2")</script>
+    <p>
+        This lets us define the odds of each item&mdash;an
+        item with a <code>w</code> or <code>p</code> value of 5 will spawn 5 times more frequently as an item with that of 1.
+        By default if a loot definition doesn't define a <code>w</code> or <code>p</code> value, it will automatically be
+        given a <code>w</code> value of 1.
+    </p>
+    <p>
+        The difference between <code>w</code> and <code>p</code> is that 
+        <code>w</code>, stands for <dfn>weight</dfn>, let us define the <em>relative</em> odds of items; while
+        <code>p</code>, stands for <dfn>probabilty</dfn>, let us define the <em>absolute</em> odds of items. 
+        If you used <code>w</code>, the actual odds of items will be normalized so that the chance of each item
+        dropping will be equal to the <code>w</code> value of that item over the sum of all <code>w</code> values
+        of items in that loot pool. If you used <code>p</code> however, the actual odds will be left intact&mdash;an 
+        item with a <code>p</code> value of 0.2 for example will have a 0.2 (or 20%) chance to be dropped. This would result
+        in a few things:
+    </p>
+    <ul>
+        <li><p>
+            If the <code>p</code> value sum of all items in a loot pool is <b>less than 1</b>, there is a chance of that
+            loot pool would result in dropping <em>nothing</em>. This is intended to allow for some tricks that will be
+            mentioned later on.
+        </p></li>
+        <li><p>
+            If the <code>p</code> value sum of all items in a loot pool is <b>greater than 1</b>, it would result
+            in a JavaScript runtime error since maths rule that all odds in a probabilistic event must add up to 1. 
+            It is possible to fill in a nothing drop in the <code>p</code>&lt;1 scenario, 
+            however in this scenario no natural solution can't really be done.
+        </p></li>
+        <li><p>
+            It should also be noted that having loot definitions mixing <code>p</code> and <code>w</code> values 
+            in the same loot pool is invalid and will result in a JavaScript runtime error.
+        </p></li>
+    </ul>
+    <p>
+        It is also possible to declare a nothing drop with <code>w</code> value definitions as shown in the third 
+        loot pool's last entry&mdash;<code>lootalot</code> understands that a loot definition not declaring an <code>item</code>
+        value should be treated as a nothing drop.
+    </p>
+    
+    <h2>Counts</h2>
+    <p>
+        We can define the <code>count</code> property of loot definition to let <code>lootalot</code> knows 
+        how many of one item should it grant when it draws that loot entry from the loot pool.
+    </p>
+    <p>
+        Let us modify the sample code above again to account for the new <code>count</code> property:
+    </p>
+    <pre><code class="language-js">const table3 = new LootTable(
+    [
+        { item: "Red Coin",    w: 5,    count: [500, 1000] },
+        { item: "Green Coin",  w: 3,    count: [400, 800] },
+        { item: "Blue Coin",   w: 2,    count: [300, 600] },
+    ], 
+    [ 
+        { item: "Red Gem",     p: 0.25, count: 5 },
+        { item: "Green Gem",   p: 0.15, count: 5 },
+        { item: "Blue Gem",    p: 0.10, count: 5 },
+    ],
+    [
+        { item: "Red Candy",   w: 5 },
+        { item: "Green Candy", w: 3 },
+        { item: "Blue Candy",  w: 2 },
+        { w: 90 },
+    ]
+);</code></pre>
+    <p>
+        Sample loot:
+    </p>
+    <pre><code class="language-js"></code></pre>
+    <script>generateLootResults("table3")</script>
+    <p>
+        <code>count</code> accept two syntaxes: a single number value indicating a constant value (see the second loot pool), or an 
+        array of two numbers that define the inclusive minimum and maximum point of a range of values, respectively  (see the first loot pool).
+        The <code>count</code> property will default to 1 if we don't define it in code.
+    </p>
+    <p>
+        Note that if a range is used, <code>lootalot</code> will try to generate integer value counts, even if the numbers you supplied are not integers.
+    </p>
+    
+    <h2>What's next?</h2>
+    <p>
+        Now that you know the basic workings of this library, you can try learing more complicated concepts by going to doc pages below this one.
+    </p>
+</body>
+</html>

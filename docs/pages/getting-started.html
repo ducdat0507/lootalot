@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Get started</title>
+    <title>Getting started</title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
     <link rel="stylesheet" href="../../css/common.css">
@@ -12,8 +12,10 @@
     <script src="../page.js"></script>
 </head>
 <body>
-    <h1>Get started</h1>
+    <h1>Getting started</h1>
+
     <h2>Importing <code>lootalot</code></h2>
+
     <h3>Using NodeJS</h3>
     <p>
         <code>lootalot</code> is available on the npm registry&mdash;you can use it to install <code>lootalot</code> like 
@@ -27,5 +29,27 @@
 var { LootTable } = require("lootalot");
 // ES6 import
 import { LootTable } from "lootalot";</code></pre>
+
+    <h3>On the browser</h3>
+    <p>
+        You can use services like unpkg and jsdelivr to use <code>lootalot</code> on the web:
+    </p>
+    <pre><code class="language-html">&lt;!-- unpkg --&gt;
+&lt;script src="https://unpkg.com/lootalot@1/dist/lootalot.min.js" &gt;&lt;/script&gt;
+&lt;!-- jsdelivr --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/lootalot@1/dist/lootalot.min.js" &gt;&lt;/script&gt;</code></pre>
+    <p>
+        All of <code>lootalot</code>'s classes will be inside the <code>lootalot</code> JS object:
+    </p>
+    <pre><code class="language-js">// Retrieve LootTable class
+const { LootTable } = lootalot;</code></pre>
+
+    <h2>What's next?</h2>
+    <p>
+        Check out the basics to learn the fundametals of how <code>lootalot</code> works:
+    </p>
+    <p>
+        &rArr; <a href="the-basics.html">The basics</a>
+    </p>
 </body>
 </html>
