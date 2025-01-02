@@ -2,6 +2,9 @@
 
 `lootalot` is a library for efficiently simulating loot drops. It is suitable for incremental games where a large amount of loot might need to be made at once.
 
+## Try it
+https://ducdat0507.github.io/lootalot
+
 ## Example usage:
 ```js
 import { LootTable } from 'lootalot';
