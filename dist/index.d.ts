@@ -1,3 +1,4 @@
+import { LootTablePrefs } from "./prefs";
 /** The range, can be a constant or an uniform range */
 type Range = number | [min: number, max: number];
 /** A valid item loot definition, should be one of the following:
@@ -27,6 +28,8 @@ type LootDefinition<TItem> = {
     p?: number;
     /** The number of this item can be dropped at once in a roll. */
     count?: Range;
+    /** The distance between possible count values. */
+    step?: number;
 } & ValidLootItemDefinition<TItem>;
 /** A pool of loot, which contains loot defintions. */
 type LootPool<TItem> = LootDefinition<TItem>[];
@@ -34,6 +37,7 @@ type LootDefinitionInternal<TItem> = {
     w: number;
     cascadeP: number;
     count: Range;
+    step: number;
 } & ValidLootItemDefinition<TItem>;
 type LootPoolInternal<TItem> = LootDefinitionInternal<TItem>[];
 /** A loot result object, returned from the `LootTable.loot()` function. */
@@ -45,30 +49,6 @@ type Loot<TItem> = {
 };
 /** An array of loot, returned from the `LootTable.loot()` function. */
 type LootResult<TItem> = Loot<TItem>[];
-/** Preferences object. */
-export declare let prefs: {
-    /** The maximum allowed precision error of thresholds such as the sum of probabilty values error. */
-    ARITHMETIC_ERROR: number;
-    /** The maximum amount of times can we roll the RNG manually (for accuracy)
-     *  before it's better to approxmiate the rolling using math (for performance) instead. */
-    MAX_REPEAT: number;
-    /** The default value of new loot tables' preferences object  */
-    DEFAULT_TABLE_PREFS: LootTablePrefs;
-};
-/** The loot table preference object type used to detemine how a specific loot table behaves. */
-type LootTablePrefs = {
-    /** The algorithm used to determine if two item entries are equal, used to merge loot results. */
-    duplicateSearchMode: DuplicateSearchMode;
-};
-/** The algorithm used to determine if two item entries are equal, used to merge loot results. */
-declare enum DuplicateSearchMode {
-    /** Items are compared using the loose equal operator (`==`). */
-    "equal" = "equal",
-    /** Items are compared using the strict equal operator (`===`). */
-    "strict_equal" = "strict_equal",
-    /** Items are converted to JSON strings and then compared using the strict equal operator (`===`). */
-    "json" = "json"
-}
 /** A loot table, containing the rules used to determine loot drops. */
 export declare class LootTable<TItem> {
     pools: LootPoolInternal<TItem>[];

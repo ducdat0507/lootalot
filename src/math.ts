@@ -1,4 +1,4 @@
-import { prefs } from "./index";
+import { prefs } from "./prefs";
 
 /**
  * Inverse error function 
@@ -39,21 +39,44 @@ export function coin_flip(n: number, p: number) {
 
 /**
  * Roll `n` dice, with face values ranging from `min` to `max`, and returns the sum of the roll dice's face values.
- * @argument {number} min - The minimum dice value. (inclusive)
- * @argument {number} max - The minimum dice value. (inclusive)
  * @argument {number} n - Amount of dice to roll.
+ * @argument {number} min - The minimum dice value. (inclusive)
+ * @argument {number} max - The maximum dice value. (inclusive)
+ * @argument {number} step - The distance between dice values.
  */
-export function dice_roll(n: number, min: number, max: number) {
+export function dice_roll(n: number, min: number, max: number, step: number = 1) {
     if (min == max) return min * n;
     if (n <= prefs.MAX_REPEAT) {
         let value = 0;
-        for (let i = 0; i < n; i++) value += Math.floor(Math.random() * (max - min + 1) + min);
+        for (let i = 0; i < n; i++) 
+        {
+            let roll = Math.random() * (max - min + step) + min;
+            if (step > 0) roll = Math.floor(roll / step) * step;
+            value += roll;
+        }
         return value;
     } else {
         let μ = (max + min) / 2 * n;
         let σ = Math.sqrt(((max - min) ** 2 - 1) / 12 * n);
-        return Math.round(clamp(probit(Math.random(), μ, σ), min * n, max * n));
+        if (step > 0) 
+        {
+            step = gcd(min, max, step);
+            return clamp(Math.round(probit(Math.random(), μ / step, σ / step)) * step, min * n, max * n);
+        }
+        else 
+        {
+            return clamp(probit(Math.random(), μ, σ), min * n, max * n);
+        }
     }
+}
+
+function gcd(...values: number[]): number {
+    let a = values[0], b = values[1];
+    if (values.length > 2) b = gcd(...values.slice(1));
+
+    if (a < b) [a, b] = [b, a];
+    while (a % b != 0) [a, b] = [b, a % b];
+    return b;
 }
 
 function clamp(x: number, min: number, max: number) {

@@ -14,8 +14,9 @@ export declare function probit(p: number, μ?: number, σ?: number): number;
 export declare function coin_flip(n: number, p: number): number;
 /**
  * Roll `n` dice, with face values ranging from `min` to `max`, and returns the sum of the roll dice's face values.
- * @argument {number} min - The minimum dice value. (inclusive)
- * @argument {number} max - The minimum dice value. (inclusive)
  * @argument {number} n - Amount of dice to roll.
+ * @argument {number} min - The minimum dice value. (inclusive)
+ * @argument {number} max - The maximum dice value. (inclusive)
+ * @argument {number} step - The distance between dice values.
  */
-export declare function dice_roll(n: number, min: number, max: number): number;
+export declare function dice_roll(n: number, min: number, max: number, step?: number): number;

@@ -21,11 +21,7 @@ let table = new LootTable(
         { w: 1,           item: { tier: 1, quality: "Regular" },      table: subTable },
     ],
     [
-        { w: 1 / 1024, item: { tier: 0, name: "Complimentary Common Currency" }, count: 250000 },
-        { w: 1 / 64,   item: { tier: 0, name: "Complimentary Common Currency" }, count: 5000   },
-        { w: 1 / 8,    item: { tier: 0, name: "Complimentary Common Currency" }, count: 500    },
-        { w: 1 / 2,    item: { tier: 0, name: "Complimentary Common Currency" }, count: 100    },
-        { w: 1,        item: { tier: 0, name: "Complimentary Common Currency" }, count: 50     },
+        { w: 1,        item: { tier: 0, name: "Complimentary Common Currency" }, count: [5000, 25000], step: 5000 },
     ],
     [
         {
@@ -51,3 +47,18 @@ console.log(loot.map(x =>
     ))).padStart(34) + " : "
     + x.count.toLocaleString("en-US")
 ).join("\n"));
+
+table = new LootTable(
+    [
+        // Drop any one of these items at varied chances
+        { item: "Apple",  w: 1 },
+        { item: "Banana", w: 2 },
+        { item: "Citrus", w: 0.5 },
+    ],
+    [
+        // Additionally, drop an extra 150~250 gold
+        { item: "Gold", count: [150, 250], step: 50 }
+    ],
+);
+loot = table.loot(1e12);
+console.log(JSON.stringify(loot, null, 4));

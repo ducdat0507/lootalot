@@ -13,14 +13,14 @@ import { LootTable } from 'lootalot';
 // We'll make 2 pools of items to choose from
 let table = new LootTable(
     [
-        // Drop any one of these items at equal chances
-        { item: "Apple" },
-        { item: "Banana" },
-        { item: "Citrus" },
+        // Drop any one of these items at varied chances
+        { item: "Apple",  w: 1 },
+        { item: "Banana", w: 2 },
+        { item: "Citrus", w: 0.5 },
     ],
     [
         // Additionally, drop an extra 150~250 gold
-        {item: "Gold", count: [150, 250]}
+        { item: "Gold", count: [150, 250], step: 50 }
     ],
 );
 
@@ -31,9 +31,21 @@ let loot = table.loot(1_000_000_000_000);
 console.log(loot);
 // Result should look like this, actual numbers may vary due to randomness:
 // [
-//   { item: 'Apple', count: 333332232866 },
-//   { item: 'Banana', count: 333332798993 },
-//   { item: 'Citrus', count: 333334968141 },
-//   { item: 'Gold', count: 200000023939135 }
+//     {
+//         "item": "Banana",
+//         "count": 571428528445
+//     },
+//     {
+//         "item": "Apple",
+//         "count": 285714017436
+//     },
+//     {
+//         "item": "Citrus",
+//         "count": 142857454119
+//     },
+//     {
+//         "item": "Gold",
+//         "count": 199999991656400
+//     }
 // ]
 ```

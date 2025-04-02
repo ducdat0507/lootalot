@@ -3,6 +3,9 @@ function _arrayLikeToArray(r, a) {
   for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
   return n;
 }
+function _arrayWithoutHoles(r) {
+  if (Array.isArray(r)) return _arrayLikeToArray(r);
+}
 function _classCallCheck(a, n) {
   if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
 }
@@ -65,6 +68,15 @@ function _createForOfIteratorHelper(r, e) {
     }
   };
 }
+function _iterableToArray(r) {
+  if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
+}
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _toConsumableArray(r) {
+  return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
+}
 function _toPrimitive(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
@@ -86,6 +98,29 @@ function _unsupportedIterableToArray(r, a) {
     return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
   }
 }
+
+/** The algorithm used to determine if two item entries are equal, used to merge loot results. */
+var DuplicateSearchMode;
+(function (DuplicateSearchMode) {
+  /** Items are compared using the loose equal operator (`==`). */
+  DuplicateSearchMode["equal"] = "equal";
+  /** Items are compared using the strict equal operator (`===`). */
+  DuplicateSearchMode["strict_equal"] = "strict_equal";
+  /** Items are converted to JSON strings and then compared using the strict equal operator (`===`). */
+  DuplicateSearchMode["json"] = "json";
+})(DuplicateSearchMode || (DuplicateSearchMode = {}));
+/** Preferences object. */
+var prefs = {
+  /** The maximum allowed precision error of thresholds such as the sum of probabilty values error. */
+  ARITHMETIC_ERROR: 1e-8,
+  /** The maximum amount of times can we roll the RNG manually (for accuracy)
+   *  before it's better to approxmiate the rolling using math (for performance) instead. */
+  MAX_REPEAT: 20,
+  /** The default value of new loot tables' preferences object  */
+  DEFAULT_TABLE_PREFS: {
+    duplicateSearchMode: "equal"
+  }
+};
 
 /**
  * Inverse error function
@@ -125,53 +160,61 @@ function coin_flip(n, p) {
 }
 /**
  * Roll `n` dice, with face values ranging from `min` to `max`, and returns the sum of the roll dice's face values.
- * @argument {number} min - The minimum dice value. (inclusive)
- * @argument {number} max - The minimum dice value. (inclusive)
  * @argument {number} n - Amount of dice to roll.
+ * @argument {number} min - The minimum dice value. (inclusive)
+ * @argument {number} max - The maximum dice value. (inclusive)
+ * @argument {number} step - The distance between dice values.
  */
 function dice_roll(n, min, max) {
+  var step = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
   if (min == max) return min * n;
   if (n <= prefs.MAX_REPEAT) {
     var value = 0;
-    for (var i = 0; i < n; i++) value += Math.floor(Math.random() * (max - min + 1) + min);
+    for (var i = 0; i < n; i++) {
+      var roll = Math.random() * (max - min + step) + min;
+      if (step > 0) roll = Math.floor(roll / step) * step;
+      value += roll;
+    }
     return value;
   } else {
     var μ = (max + min) / 2 * n;
     var σ = Math.sqrt((Math.pow(max - min, 2) - 1) / 12 * n);
-    return Math.round(clamp(probit(Math.random(), μ, σ), min * n, max * n));
+    if (step > 0) {
+      step = gcd(min, max, step);
+      return clamp(Math.round(probit(Math.random(), μ / step, σ / step)) * step, min * n, max * n);
+    } else {
+      return clamp(probit(Math.random(), μ, σ), min * n, max * n);
+    }
   }
+}
+function gcd() {
+  for (var _len = arguments.length, values = new Array(_len), _key = 0; _key < _len; _key++) {
+    values[_key] = arguments[_key];
+  }
+  var a = values[0],
+    b = values[1];
+  if (values.length > 2) b = gcd.apply(void 0, _toConsumableArray(values.slice(1)));
+  if (a < b) {
+    var _ref = [b, a];
+    a = _ref[0];
+    b = _ref[1];
+  }
+  while (a % b != 0) {
+    var _ref2 = [b, a % b];
+    a = _ref2[0];
+    b = _ref2[1];
+  }
+  return b;
 }
 function clamp(x, min, max) {
   return Math.max(Math.min(x, max), min);
 }
 
-/** Preferences object. */
-var prefs = {
-  /** The maximum allowed precision error of thresholds such as the sum of probabilty values error. */
-  ARITHMETIC_ERROR: 1e-8,
-  /** The maximum amount of times can we roll the RNG manually (for accuracy)
-   *  before it's better to approxmiate the rolling using math (for performance) instead. */
-  MAX_REPEAT: 20,
-  /** The default value of new loot tables' preferences object  */
-  DEFAULT_TABLE_PREFS: {
-    duplicateSearchMode: "equal"
-  }
-};
-/** The algorithm used to determine if two item entries are equal, used to merge loot results. */
-var DuplicateSearchMode;
-(function (DuplicateSearchMode) {
-  /** Items are compared using the loose equal operator (`==`). */
-  DuplicateSearchMode["equal"] = "equal";
-  /** Items are compared using the strict equal operator (`===`). */
-  DuplicateSearchMode["strict_equal"] = "strict_equal";
-  /** Items are converted to JSON strings and then compared using the strict equal operator (`===`). */
-  DuplicateSearchMode["json"] = "json";
-})(DuplicateSearchMode || (DuplicateSearchMode = {}));
 /** A loot table, containing the rules used to determine loot drops. */
 var LootTable = /*#__PURE__*/function () {
   function LootTable() {
     _classCallCheck(this, LootTable);
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     this.pools = [];
     this.prefs = Object.assign({}, prefs.DEFAULT_TABLE_PREFS);
     this.prefs = Object.assign({}, prefs.DEFAULT_TABLE_PREFS);
@@ -198,6 +241,7 @@ var LootTable = /*#__PURE__*/function () {
           if (wExists && pExists) throw Error("All loot definitions in a pool must either use `p` for probability or `w` for weight");
           if (((_c = _def.w) !== null && _c !== void 0 ? _c : 1) < 0) throw Error("Weight can not be negative");
           if (((_d = _def.p) !== null && _d !== void 0 ? _d : 0) < 0) throw Error("Probabilty can not be negative");
+          if (((_e = _def.step) !== null && _e !== void 0 ? _e : 1) < 0) throw Error("Step can not be negative");
         }
       } catch (err) {
         _iterator.e(err);
@@ -211,14 +255,16 @@ var LootTable = /*#__PURE__*/function () {
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
           var _def2 = _step2.value;
-          // @ts-expect-error
-          newPool.push({
-            w: (_f = (_e = _def2.w) !== null && _e !== void 0 ? _e : _def2.p) !== null && _f !== void 0 ? _f : 1,
+          var item = {
+            w: (_g = (_f = _def2.w) !== null && _f !== void 0 ? _f : _def2.p) !== null && _g !== void 0 ? _g : 1,
             cascadeP: 0,
             item: _def2.item,
             table: _def2.table,
-            count: (_g = _def2.count) !== null && _g !== void 0 ? _g : 1
-          });
+            count: (_h = _def2.count) !== null && _h !== void 0 ? _h : 1,
+            step: (_j = _def2.step) !== null && _j !== void 0 ? _j : getPreferredStepCount(_def2.count)
+          };
+          // @ts-expect-error
+          newPool.push(item);
         }
       } catch (err) {
         _iterator2.e(err);
@@ -229,7 +275,8 @@ var LootTable = /*#__PURE__*/function () {
         newPool.push({
           w: 1 - pSum,
           cascadeP: 0,
-          count: 1
+          count: 1,
+          step: 1
         });
       }
       // Sort our item list by most common first
@@ -280,7 +327,7 @@ var LootTable = /*#__PURE__*/function () {
                 if (times <= 0) return 0; // continue
                 t -= times;
                 var amount = 0;
-                if (typeof item.count == "number") amount = times * item.count;else amount = dice_roll(times, item.count[0], item.count[1]);
+                if (typeof item.count == "number") amount = times * item.count;else amount = dice_roll(times, item.count[0], item.count[1], item.step);
                 if (item.table !== undefined) {
                   var childLoot = item.table.loot(amount);
                   if (item.item !== undefined) childLoot = childLoot.map(function (x) {
@@ -339,5 +386,9 @@ var LootTable = /*#__PURE__*/function () {
     }
   }]);
 }();
+function getPreferredStepCount(count) {
+  if (count === undefined) return 1;
+  if (typeof count == "number") return +(count % 1 == 0);else return +(count[0] % 1 == 0 && count[1] % 1 == 0);
+}
 
-export { LootTable, prefs };
+export { LootTable };

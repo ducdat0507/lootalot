@@ -1,4 +1,5 @@
 import { coin_flip, dice_roll } from "./math";
+import { LootTablePrefs, prefs } from "./prefs";
 
 /** The range, can be a constant or an uniform range */
 type Range = number | [min: number, max: number];
@@ -22,7 +23,9 @@ type LootDefinition<TItem> = {
     /** Absolute probability of the item. The sum of probability values in a loot pool can not be greater than 1. */
     p?: number,
     /** The number of this item can be dropped at once in a roll. */
-    count?: Range 
+    count?: Range,
+    /** The distance between possible count values. */
+    step?: number,
 } & ValidLootItemDefinition<TItem>;
 
 /** A pool of loot, which contains loot defintions. */
@@ -31,7 +34,8 @@ type LootPool<TItem> = LootDefinition<TItem>[];
 type LootDefinitionInternal<TItem> = { 
     w: number,
     cascadeP: number,
-    count: Range 
+    count: Range,
+    step: number,
 } & ValidLootItemDefinition<TItem>;
 
 type LootPoolInternal<TItem> = LootDefinitionInternal<TItem>[];
@@ -46,35 +50,6 @@ type Loot<TItem> = {
 
 /** An array of loot, returned from the `LootTable.loot()` function. */
 type LootResult<TItem> = Loot<TItem>[];
-
-/** Preferences object. */
-export let prefs = {
-    /** The maximum allowed precision error of thresholds such as the sum of probabilty values error. */
-    ARITHMETIC_ERROR: 1e-8,
-    /** The maximum amount of times can we roll the RNG manually (for accuracy)
-     *  before it's better to approxmiate the rolling using math (for performance) instead. */
-    MAX_REPEAT: 20,
-    /** The default value of new loot tables' preferences object  */
-    DEFAULT_TABLE_PREFS: {
-        duplicateSearchMode: "equal",
-    } as LootTablePrefs
-}
-
-/** The loot table preference object type used to detemine how a specific loot table behaves. */
-type LootTablePrefs = {
-    /** The algorithm used to determine if two item entries are equal, used to merge loot results. */
-    duplicateSearchMode: DuplicateSearchMode 
-}
-
-/** The algorithm used to determine if two item entries are equal, used to merge loot results. */
-enum DuplicateSearchMode {
-    /** Items are compared using the loose equal operator (`==`). */
-    "equal" = "equal", 
-    /** Items are compared using the strict equal operator (`===`). */
-    "strict_equal" = "strict_equal", 
-    /** Items are converted to JSON strings and then compared using the strict equal operator (`===`). */
-    "json" = "json"
-}
 
 /** A loot table, containing the rules used to determine loot drops. */
 export class LootTable<TItem> {
@@ -97,25 +72,29 @@ export class LootTable<TItem> {
                 if (wExists && pExists) throw Error("All loot definitions in a pool must either use `p` for probability or `w` for weight");
                 if ((def.w ?? 1) < 0) throw Error("Weight can not be negative");
                 if ((def.p ?? 0) < 0) throw Error("Probabilty can not be negative");
+                if ((def.step ?? 1) < 0) throw Error("Step can not be negative");
             }
             if (pSum > 1 + prefs.ARITHMETIC_ERROR) throw Error("All loot definitions in a pool must have their `p` values sum to 1 or less (sum = " + pSum + ")");
             if (pExists) wSum = 1;
 
             for (let def of pool) {
-                // @ts-expect-error
-                newPool.push({
+                let item = {
                     w: def.w ?? def.p ?? 1,
                     cascadeP: 0,
                     item: def.item,
                     table: def.table,
                     count: def.count ?? 1,
-                })
+                    step: def.step ?? getPreferredStepCount(def.count),
+                };
+                // @ts-expect-error
+                newPool.push(item);
             }
             if (pExists && pSum < 1 - prefs.ARITHMETIC_ERROR) {
                 newPool.push({
                     w: 1 - pSum,
                     cascadeP: 0,
                     count: 1,
+                    step: 1,
                 })
             }
             // Sort our item list by most common first
@@ -152,7 +131,7 @@ export class LootTable<TItem> {
 
                 let amount = 0;
                 if (typeof item.count == "number") amount = times * item.count;
-                else amount = dice_roll(times, item.count[0], item.count[1]);
+                else amount = dice_roll(times, item.count[0], item.count[1], item.step);
 
                 if (item.table !== undefined) {
                     let childLoot = item.table.loot(amount);
@@ -176,4 +155,10 @@ export class LootTable<TItem> {
             case "json": return JSON.stringify(a) == JSON.stringify(b);
         }
     }
+}
+
+function getPreferredStepCount(count: Range | undefined): number {
+    if (count === undefined) return 1;
+    if (typeof count == "number") return +(count % 1 == 0);
+    else return +(count[0] % 1 == 0 && count[1] % 1 == 0)
 }
