@@ -11,6 +11,8 @@ body {
     font-family: var(--body-font);
     font-size: 14px;
     line-height: 1.7;
+    
+    touch-action: manipulation;
 }
 
 .mono, code, pre {
