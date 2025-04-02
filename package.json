@@ -1,6 +1,6 @@
 {
   "name": "lootalot",
-  "version": "1.2.0",
+  "version": "1.2.3",
   "description": "Library for simulating loot table drops of arbitrary trial counts",
   "main": "dist/lootalot.js",
   "module": "dist/lootalot.esm.js",
@@ -24,8 +24,10 @@
     "random"
   ],
   "author": "ducdat0507",
+  "homepage": "https://ducdat0507.github.io/lootalot/",
+  "repository": "https://github.com/ducdat0507/lootalot/",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "bili": "^5.0.5",
     "rollup-plugin-typescript2": "^0.36.0",
     "typescript": "^5.5.4"
