@@ -84,7 +84,13 @@ main {
     min-height: 100%;
     box-sizing: border-box;
     background: #44280c;
+    border-inline: 1px solid #ffe95b;
     text-align: justify;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 0 0 1px black, 0 0 10px 5px black;
+}
+
+a {
+    color: white;
 }

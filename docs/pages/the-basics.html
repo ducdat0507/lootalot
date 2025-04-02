@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../page.css">
     <script src="../page.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/lootalot@1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lootalot@1.2"></script>
     <script>
         window.LootTable = lootalot.LootTable;
         function generateLootResults(name, defOffset = 2, resultOffset = 1) {
@@ -101,7 +101,7 @@
         { item: "Red Candy",   w: 5 },
         { item: "Green Candy", w: 3 },
         { item: "Blue Candy",  w: 2 },
-        { w: 90 },
+        { w: 10 },
     ]
 );</code></pre>
     <p>
@@ -154,13 +154,23 @@
         how many of one item should it grant when it draws that loot entry from the loot pool.
     </p>
     <p>
-        Let us modify the sample code above again to account for the new <code>count</code> property:
+        <code>count</code> accept two syntaxes: a single number value indicating a constant value (see the second loot pool), or an 
+        array of two numbers that define the inclusive minimum and maximum point of a range of values, respectively  (see the first loot pool).
+        The <code>count</code> property will default to 1 if we don't define it in code.
+    </p>
+    <p>
+        You can also apply a <code>step</code> value to specify the distance between possible count values. If <code>step</code> is 0, all
+        the possible values are all floating point numbers between the <code>count</code> range. Specifying <code>step</code> is optional, and the default
+        value is 0 if <code>count</code> contains a non-integer value or 1 otherwise.
+    </p>
+    <p>
+        Let us modify the sample code above again to account for the new <code>count</code> and <code>step</code> property:
     </p>
     <pre><code class="language-js">const table3 = new LootTable(
     [
-        { item: "Red Coin",    w: 5,    count: [500, 1000] },
-        { item: "Green Coin",  w: 3,    count: [400, 800] },
-        { item: "Blue Coin",   w: 2,    count: [300, 600] },
+        { item: "Red Coin",    w: 5,    count: [500, 1000], step: 100 },
+        { item: "Green Coin",  w: 3,    count: [400, 800],  step: 100 },
+        { item: "Blue Coin",   w: 2,    count: [300, 600],  step: 100 },
     ], 
     [ 
         { item: "Red Gem",     p: 0.25, count: 5 },
@@ -168,10 +178,10 @@
         { item: "Blue Gem",    p: 0.10, count: 5 },
     ],
     [
-        { item: "Red Candy",   w: 5 },
-        { item: "Green Candy", w: 3 },
-        { item: "Blue Candy",  w: 2 },
-        { w: 90 },
+        { item: "Red Candy",   w: 5,    count: [1, 2],      step: 0 },
+        { item: "Green Candy", w: 3,    count: [1, 2],      step: 0 },
+        { item: "Blue Candy",  w: 2,    count: [1, 2],      step: 0 },
+        { w: 10 },
     ]
 );</code></pre>
     <p>
@@ -179,14 +189,6 @@
     </p>
     <pre><code class="language-js"></code></pre>
     <script>generateLootResults("table3")</script>
-    <p>
-        <code>count</code> accept two syntaxes: a single number value indicating a constant value (see the second loot pool), or an 
-        array of two numbers that define the inclusive minimum and maximum point of a range of values, respectively  (see the first loot pool).
-        The <code>count</code> property will default to 1 if we don't define it in code.
-    </p>
-    <p>
-        Note that if a range is used, <code>lootalot</code> will try to generate integer value counts, even if the numbers you supplied are not integers.
-    </p>
     
     <h2>What's next?</h2>
     <p>

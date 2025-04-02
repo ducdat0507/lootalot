@@ -57,8 +57,8 @@ function init() {
     }
 
     let target = currentPage = /p=([^&#=]*)/.exec(window.location.search);
-    let page = map.find(x => x.path == target);
-    if (page) loadPage(target);
+    let page = map.find(x => x.path == target?.[1]);
+    if (page) loadPage(target[1]);
     else loadPage("introduction");
 
     elms.mainframe.style.display = "";
