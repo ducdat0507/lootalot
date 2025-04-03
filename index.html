@@ -18,8 +18,9 @@
         <main>
             <h1 class="big-title mono">lootalot</h1>
             <p>
-                <code>lootalot</code> is a JavaScript library that specializes in generating loot drops from loot tables.
-                The strength of this library is also what is referred to by its name&mdash;the ability to generate arbitrary amounts of loot trials without sweat.
+                <code>lootalot</code> is a JavaScript library that specializes in simulating loot table drops of arbitrary trial counts.
+                It is designed for games, primarily incremental games that find themselves needing to simulate a random event for large 
+                numbers of times at once.
             </p>
             <span id="try-me-button">
                 <div>&nbsp;</div>
@@ -60,7 +61,7 @@
             <label for="loot-trials">
                 Trials
             </label>
-            <input id="loot-trials" type="number" min="1" step="1" placeholder="1">
+            <input id="loot-trials" type="number" min="1" step="1" placeholder="1 (you can try &quot;one&quot; or &quot;a trillion&quot;!)">
             <div style="display: flex; gap: 5px">
                 <button id="loot-button">Loot!</button>
                 <button id="loot-reset">Reset loot</button>
