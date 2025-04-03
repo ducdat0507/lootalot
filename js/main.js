@@ -34,12 +34,15 @@ function init() {
 
     let lastValidValue = 1;
     elms.lootTrials.oninput = (e) => {
-        let value = Math.floor(e.target.value);
-        if (value == value) lastValidValue = value;
+        let value = Math.max(Math.floor(e.target.value), 1);
+        if (e.target.value == "one") lastValidValue = 1;
+        if (e.target.value == "a trillion") lastValidValue = 1e12;
+        else if (value == value) lastValidValue = value;
     }
     elms.lootTrials.onchange = (e) => {
-        let value = Math.floor(e.target.value);
-        if (value != value) e.target.value = lastValidValue;
+        let value = Math.max(Math.floor(e.target.value), 1);
+        if (!e.target.value) e.target.value = "";
+        else if (value != value) e.target.value = lastValidValue;
         else e.target.value = value;
     }
  
