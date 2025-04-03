@@ -76,6 +76,7 @@ input {
     position: fixed;
     inset: 0;
     overflow: hidden auto;
+    padding-inline: 20px;
 }
 
 main {

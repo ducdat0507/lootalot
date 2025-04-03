@@ -57,7 +57,7 @@ hr {
     display: none;
 }
 
-@media (max-width: 1240px) {
+@media (max-width: 1080px) {
     header {
         display: flex;
     }
@@ -83,7 +83,7 @@ hr {
         margin-top: calc(var(--main-padding) * -1);
     }
 }
-@media (max-width: 920px) {
+@media (max-width: 720px) {
     #navigation-show-button, #navigation-hide-button {
         display: unset;
     }

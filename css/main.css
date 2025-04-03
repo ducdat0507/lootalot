@@ -44,6 +44,10 @@ body {
 }
 .loot-simulator #loot-list > div > div {
     flex: 1;
+    white-space: nowrap;
+}
+.loot-simulator #loot-list > div > div:first-child {
+    text-overflow: ellipsis;
 }
 .loot-simulator #loot-list > div > div:last-child {
     text-align: end;
@@ -109,7 +113,13 @@ body {
     display: none;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1080px) {
+    .loot-simulator {
+        padding-left: 20px;
+    }
+}
+
+@media (max-width: 920px) {
     #try-me-button, #try-me-back-link {
         display: unset;
     }
@@ -131,6 +141,10 @@ body {
     .main-container > * {
         width: 100%;
         flex: 0 0 100%;
+    }
+
+    .loot-simulator {
+        padding-left: 40px;
     }
 
     .floating-panel:last-child {

@@ -32,6 +32,17 @@ function init() {
     elms.lootButton.onclick = loot;
     elms.lootReset.onclick = resetLoot;
 
+    let lastValidValue = 1;
+    elms.lootTrials.oninput = (e) => {
+        let value = Math.floor(e.target.value);
+        if (value == value) lastValidValue = value;
+    }
+    elms.lootTrials.onchange = (e) => {
+        let value = Math.floor(e.target.value);
+        if (value != value) e.target.value = lastValidValue;
+        else e.target.value = value;
+    }
+ 
     document.querySelector("#try-me-button a").onclick = () => {
         shouldGoBack = true;
     }
