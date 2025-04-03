@@ -4,9 +4,11 @@ body {
     color: #f3f2d1;
     margin: 0;
 
-    --mono-font: "Xanh Mono", monospace;
+    --mono-font: "Lekton", monospace;
     --header-font: "Xanh Mono", serif;
-    --body-font: "Merriweather", serif;
+    --body-font: "Merriweather", sans-serif;
+
+    --main-padding: min(40px, calc(6vw - 6px));
 
     font-family: var(--body-font);
     font-size: 14px;
@@ -77,7 +79,6 @@ input {
 }
 
 main {
-    --main-padding: min(40px, calc(6vw - 6px));
     width: min(560px, calc(100vw - 40px));
     padding: var(--main-padding);
     height: fit-content;

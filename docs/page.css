@@ -1,6 +1,7 @@
 body {
     background: #44280c;
     text-align: justify;
+    margin-inline: var(--main-padding);
 }
 
 pre {
@@ -41,6 +42,7 @@ a {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    position: relative;
     line-height: 1.4;
     margin-block: 1rem;
     background: linear-gradient(#0007 50%, #0000 50%) bottom / 100% .6em no-repeat;
@@ -56,5 +58,11 @@ h3::before {
     content: "### ";
 }
 :is(h1, h2, h3)::before {
+    position: absolute;
+    right: calc(100% - 10px);
+    top: -5px;
     color: #ffe95b77;
+}
+h3 {
+    font-weight: bold;
 }

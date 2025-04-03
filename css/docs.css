@@ -1,5 +1,7 @@
 #mainframe {
     border: none;
+    margin: calc(var(--main-padding) * -1);
+    margin-top: 0;
 }
 
 aside {
@@ -76,6 +78,9 @@ hr {
     .is-summary #summary-bar {
         transform: none;
         box-shadow: 0 0 40px #000;
+    }
+    #mainframe {
+        margin-top: calc(var(--main-padding) * -1);
     }
 }
 @media (max-width: 920px) {

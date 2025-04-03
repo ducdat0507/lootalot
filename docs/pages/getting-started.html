@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Getting started</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Lekton:ital,wght@0,400;0,700;1,400&family=Xanh+Mono:ital@0;1&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
     <link rel="stylesheet" href="../../css/common.css">
     <link rel="stylesheet" href="../page.css">
@@ -21,13 +21,18 @@
         <code>lootalot</code> is available on the npm registry&mdash;you can use it to install <code>lootalot</code> like 
         how you would install other npm packages:
     </p>
-    <pre><code class="language-shell">npm install lootalot</code></pre>
+    <pre><code class="language-bash"># install via npm
+npm install lootalot</code></pre>
+    <pre><code class="language-bash"># install via pnpm
+pnpm install lootalot</code></pre>
+    <pre><code class="language-bash"># install via yarn
+yarn add lootalot</code></pre>
     <p>
         From there, it's just a matter of importing <code>lootalot</code>'s classes using whatever method you want to use:
     </p>
     <pre><code class="language-js">// CommonJS
-var { LootTable } = require("lootalot");
-// ES6 import
+var { LootTable } = require("lootalot");</code></pre>
+<pre><code class="language-js">// ES6 import
 import { LootTable } from "lootalot";</code></pre>
 
     <h3>On the browser</h3>
@@ -35,8 +40,8 @@ import { LootTable } from "lootalot";</code></pre>
         You can use services like unpkg and jsdelivr to use <code>lootalot</code> on the web:
     </p>
     <pre><code class="language-html">&lt;!-- unpkg --&gt;
-&lt;script src="https://unpkg.com/lootalot@1.2/dist/lootalot.min.js" &gt;&lt;/script&gt;
-&lt;!-- jsdelivr --&gt;
+&lt;script src="https://unpkg.com/lootalot@1.2/dist/lootalot.min.js" &gt;&lt;/script&gt;</code></pre>
+<pre><code class="language-html">&lt;!-- jsdelivr --&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/lootalot@1.2/dist/lootalot.min.js" &gt;&lt;/script&gt;</code></pre>
     <p>
         All of <code>lootalot</code>'s classes will be inside the <code>lootalot</code> JS object:
