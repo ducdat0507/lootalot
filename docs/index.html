@@ -10,29 +10,41 @@
     <link href="../css/docs.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/lootalot@1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
     <script src="../js/docs.js"></script>
 </head>
 <body onload="init()">
     <div class="main-container">
         <aside id="navigation-bar">
             <h2>lootalot docs</h2>
-            <button id="navigation-hide-button">✕</button>
+            <button id="navigation-hide-button" class="icon-button">
+                <iconify-icon icon="lucide:x" inline></iconify-icon>
+            </button>
             <div id="navigation-list">
-                <a class="link-entry" href="../">&larr; Return to home page</a>
+                <a class="link-entry" href="../">
+                    <iconify-icon icon="lucide:arrow-left" style="font-size: 24px; vertical-align: -7px;"></iconify-icon>
+                    Return to home page
+                </a>
                 <hr/>
             </div>
         </aside>
         <main>
             <header>
-                <button id="navigation-show-button">&larr;</button>
+                <button id="navigation-show-button" class="icon-button">
+                    <iconify-icon icon="lucide:sidebar" inline></iconify-icon>
+                </button>
                 <h1 id="page-title"></h1>
-                <button id="summary-show-button">&rarr;</button>
+                <button id="summary-show-button" class="icon-button">
+                    <iconify-icon icon="lucide:list-tree" inline></iconify-icon>
+                </button>
             </header>
             <iframe style="display:none" id="mainframe" onload="onContentLoad(this)" src="about:blank"></iframe>
         </main>
         <aside id="summary-bar">
             <div>
-                <button id="summary-hide-button">✕</button>
+                <button id="summary-hide-button" class="icon-button">
+                    <iconify-icon icon="lucide:x" inline></iconify-icon>
+                </button>
             </div>
             <h2>In this article</h2>
             <div id="summary-list"></div>

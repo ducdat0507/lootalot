@@ -15,8 +15,27 @@ body {
     flex-direction: column;
     gap: 5px;
 }
-.loot-simulator :is(select, button) {
+.loot-simulator :is(select) {
     width: 100%;
+}
+.loot-simulator #loot-tables {
+    text-align: start;
+    position: relative;
+    padding-right: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.loot-simulator #loot-tables::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: calc(50% - 6px);
+    width: 6px;
+    height: 6px;
+    border-bottom: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+    transform: rotate(45deg);
 }
 .loot-simulator label {
     text-align: center;
@@ -53,14 +72,25 @@ body {
     text-align: end;
     font-variant-numeric: lining-nums tabular-nums;
 }
+.loot-simulator #loot-list > div.active {
+    animation: 0.5s ease-out loot-flash;
+}
 .loot-simulator #loot-trials {
     font-variant-numeric: lining-nums tabular-nums;
+}
+.loot-simulator #loot-actions {
+    display: flex; 
+    gap: 5px;
+}
+.loot-simulator #loot-actions > * {
+    flex: 1;
 }
 .loot-simulator #loot-button {
     background: linear-gradient(#ffee00, #aa9900);
     color: black;
     box-shadow: inset 0 -8px 8px #0003, 0 2px 4px #000;
     text-shadow: 0 1px #fff7;
+    flex: 2;
 }
 .loot-simulator #loot-button:hover {
     box-shadow: inset 0 -8px 8px #0003, 0 3px 6px #000;
@@ -68,6 +98,9 @@ body {
 .loot-simulator #loot-button:active {
     background: linear-gradient(#aa9900, #ffee00);
     box-shadow: inset 0 8px 8px #0003, 0 2px 4px #000;
+}
+.loot-simulator:not(.cumulative) #loot-reset {
+    display: none;
 }
 
 .article-button {
@@ -157,6 +190,13 @@ body {
     }
     #try-me-back-link button {
         display: inline-block;
-        width: auto;
+    }
+}
+
+@keyframes loot-flash {
+    from {
+        text-shadow: 0 0 5px currentColor, -2px 0 4px currentColor, 2px 0 4px currentColor;
+    } to {
+        text-shadow: none;
     }
 }

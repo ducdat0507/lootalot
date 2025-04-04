@@ -49,6 +49,12 @@ button, input, select {
     padding-inline: calc(20px - 0.5em);
     box-sizing: border-box;
 }
+button.icon-button {
+    width: 40px;
+    padding-inline: 0;
+    font-size: 24px;
+    line-height: 24px;
+}
 
 button, select {
     box-shadow: inset 0 -4px 8px #0003, 0 2px 4px #000;
@@ -63,9 +69,39 @@ button:active, select:active {
     transform: translateY(0px);
     filter: brightness(0.6);
 }
+button:disabled, select:disabled {
+    box-shadow: inset 0 4px 8px #0007;
+    background: #0007;
+    transform: translateY(0px);
+    filter: none;
+    cursor: default;
+}
 
 input {
     box-shadow: inset 0 4px 8px #0005, 0 1px 2px #000;
+    margin: 0;
+}
+input[type="checkbox"] {
+    appearance: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+input[type="checkbox"]::before {
+    content: "X";
+    opacity: 0;
+}
+input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 16px;
+    border-bottom: 4px solid white;
+    border-right: 4px solid white;
+    transform: translate(0px, -3px) rotate(45deg);
 }
 
 
@@ -95,4 +131,122 @@ main {
 
 a {
     color: white;
+}
+
+.popup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0007;
+    padding: 20px 0;
+    overflow: hidden;
+}
+.popup .popup-container {
+    background: #44280c;
+    border: 1px solid #ffe95b;
+    min-width: min(100%, 500px);
+    max-width: 960px;
+    position: relative;
+    box-shadow: 0 0 0 1px black, 0 4px 10px 5px black;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+.popup .popup-close {
+    position: absolute;
+    inset: 5px 5px auto auto;
+}
+.popup .popup-content {
+    padding: 15px;
+    flex: 1;
+    overflow-y: auto;
+}
+.popup h2 {
+    line-height: 40px;
+    flex-shrink: 0;
+    padding: 5px 60px 5px 15px;
+    background: #170c01;
+    border-bottom: 1px solid #ffe95b;
+}
+
+.popup .setting {
+    line-height: 1.3;
+}
+.popup .setting label h3 {
+    font-family: var(--body-font);
+    font-weight: bold;
+    font-size: 1em;
+    color: white;
+}
+.popup .setting.toggle {
+    display: flex;
+    flex-direction: row;
+}
+.popup .setting.toggle label {
+    display: block;
+    padding-inline-start: 8px;
+}
+.popup .setting.toggle label :is(h3, p) {
+    margin: 0;
+}
+.popup .loot-table-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.popup .loot-table-list > h4 {
+    font-family: var(--body-font);
+    text-align: center;
+    font-variant-caps: small-caps;
+    border-bottom: 1px solid #ffe95b77;
+    border-radius: 5px;
+    line-height: 1.5;
+}
+.popup .loot-table-list > button:disabled {
+    font-weight: bold;
+    background-image: radial-gradient(#ffe95b77, #0000 50%);
+    box-shadow: 0 0 2px #ffe95b, -5px 0 10px -5px #ffe95b, 5px 0 10px -5px #ffe95b;
+}
+.popup .loot-table-list .info-box {
+    padding: 10px;
+    margin-top: -5px;
+    background: #170c01;
+    border: 1px solid #ffe95b;
+    border-radius: 5px;
+    line-height: 1.3;
+    position: relative;
+    box-shadow: 0 2px 8px #000;
+    animation: .2s cubic-bezier(0.075, 0.82, 0.165, 1) info-box-pop;
+}
+.popup .loot-table-list .info-box::before {
+    content: "";
+    position: absolute;
+    background: #170c01;
+    background-clip: padding-box;
+    border-top: 1px solid #ffe95b;
+    border-left: 1px solid #ffe95b;
+    width: 9px;
+    height: 9px;
+    top: 0;
+    left: 50%;
+    transform: translate(0, -5.6px) rotate(45deg);
+}
+.popup .loot-table-list .info-box hr {
+    border: none;
+    border-bottom: 1px solid #ffe95b77;
+    margin-block: 10px;
+}
+.popup .loot-table-list .info-box .sources {
+    text-align: end;
+    font-style: italic;
+}
+
+@keyframes info-box-pop {
+    from {
+        transform: translateY(5px);
+    } to {
+        transform: none;
+    }
 }

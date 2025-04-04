@@ -13,8 +13,11 @@
     <meta property="og:description" content="JavaScript library for simulating loot table drops of arbitrary trial counts" />
 
     <script src="https://cdn.jsdelivr.net/npm/lootalot@1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.3.0/dist/iconify-icon.min.js"></script>
+    <script src="js/popup.js"></script>
     <script src="js/main.js"></script>
     <script src="js/tables/lunar-laboratory-equipment.js"></script>
+    <script src="js/tables/blood-reaver.js"></script>
 </head>
 <body onload="init()">
     <div class="main-container">
@@ -30,21 +33,21 @@
                 <a class="article-button" href="#try-me">
                     <article>
                         <h2>Try me</h2>
-                        <p>See <code>lootalot</code> working for yourself!</p>
+                        <p>Loot simulator powered by <code>lootalot</code>!</p>
                     </article>
                 </a>
             </span>
             <div>&nbsp;</div>
             <a class="article-button" href="docs/?p=getting-started">
                 <article>
-                    <h2>Get Started</h2>
+                    <h2>Get started</h2>
                     <p>Use <code>lootalot</code> for your projects!</p>
                 </article>
             </a>
             <div>&nbsp;</div>
             <a class="article-button" href="docs">
                 <article>
-                    <h2>Learn More</h2>
+                    <h2>Learn more</h2>
                     <p>Go to <code>lootalot</code>'s documentation page</p>
                 </article>
             </a>
@@ -55,17 +58,24 @@
             </p>
         </main>
         <aside class="floating-panel loot-simulator">
-            <h2>
-                <a id="try-me-back-link" href="#"><button>&larr;</button></a>
-                Try me:
+            <h2 style="display: flex; gap: 10px; align-items: center;">
+                <a id="try-me-back-link" href="#"><button class="icon-button">
+                    <iconify-icon icon="lucide:arrow-left" inline></iconify-icon>
+                </button></a>
+                <span style="flex: 1">
+                    Try me:
+                </span>
+                <button id="loot-options-button" class="icon-button">
+                    <iconify-icon icon="lucide:settings" inline></iconify-icon>
+                </button>
             </h2>
-            <select id="loot-tables"></select>
+            <button id="loot-tables" role="listbox"></button>
             <div id="loot-list"></div>
             <label for="loot-trials">
                 Trials
             </label>
             <input id="loot-trials" placeholder="1 (you can try &quot;one&quot; or &quot;a trillion&quot;!)">
-            <div style="display: flex; gap: 5px">
+            <div id="loot-actions">
                 <button id="loot-button">Loot!</button>
                 <button id="loot-reset">Reset loot</button>
             </div>
